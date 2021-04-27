@@ -22,9 +22,15 @@ $f3->route('GET /', function (){
 });
 
 $f3->route('GET /breakfast', function (){
-    // display the home page
+    // display the breakfast page
     $view = new Template();
     echo $view->render('views/breakfast.html');
+});
+
+$f3->route('GET /lunch', function (){
+    // display the lunch page
+    $view = new Template();
+    echo $view->render('views/lunch.html');
 });
 
 // run Fat-Free
