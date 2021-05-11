@@ -11,6 +11,8 @@ session_start();
 
 // require autoload file
 require_once('vendor/autoload.php');
+require_once('model/dataLayer.php');
+require_once('model/validation.php');
 
 // :: invoke static method, -> invoke instance method
 // instantiate Fat-Free
@@ -36,21 +38,44 @@ $f3->route('GET /lunch', function (){
     echo $view->render('views/lunch.html');
 });
 
-$f3->route('GET|POST /order1', function (){
+$f3->route('GET|POST /order1', function ($f3){
     // if the form has been submitted, add data to session
     // and send user to next form
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $_SESSION['food'] = $_POST['food'];
-        $_SESSION['meal'] = $_POST['meal'];
-        header('location: order2');
+
+        // if food is valid store data
+        if(validFood($_POST['food'])) {
+            $_SESSION['food'] = $_POST['food'];
+        }
+        // otherwise set an error variable in the hive
+        else{
+            $f3->set('errors["food"]', 'Please enter a food');
+        }
+
+        // if meal is valid store data
+        if(isset($_POST['meal']) && validFood($_POST['meal'])) {
+            $_SESSION['meal'] = $_POST['meal'];
+        }
+        // otherwise set an error variable in the hive
+        else{
+            $f3->set('errors["meal"]', 'Invalid meal selected');
+        }
+
+        // if there are no errors, redierct to order 2
+        if(empty($f3->get('errors'))) {
+            header('location: order2');
+        }
     }
+
+    // get the data from the model
+    $f3->set('meals', getMeals());
 
     // display the first order form
     $view = new Template();
     echo $view->render('views/orderForm1.html');
 });
 
-$f3->route('GET|POST /order2', function (){
+$f3->route('GET|POST /order2', function ($f3){
     // if the form has been submitted, add data to session
     // and send user to summary
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -58,6 +83,9 @@ $f3->route('GET|POST /order2', function (){
         $_SESSION['conds'] = implode(", ", $_POST['conds']);
         header('location: summary');
     }
+
+    // get the data from the model
+    $f3->set('conds', getCondiments());
 
     // display the second order form
     $view = new Template();
