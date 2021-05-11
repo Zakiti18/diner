@@ -39,6 +39,9 @@ $f3->route('GET /lunch', function (){
 });
 
 $f3->route('GET|POST /order1', function ($f3){
+    // reinitialize session array
+    $_SESSION = array();
+
     // if the form has been submitted, add data to session
     // and send user to next form
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -79,9 +82,20 @@ $f3->route('GET|POST /order2', function ($f3){
     // if the form has been submitted, add data to session
     // and send user to summary
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        // data validation goes here
-        $_SESSION['conds'] = implode(", ", $_POST['conds']);
-        header('location: summary');
+        if(!empty($_POST['conds'])){
+            // data validation goes here
+            if(validCondiments($_POST['conds'])){
+                $_SESSION['conds'] = implode(", ", $_POST['conds']);
+            }
+            else{
+                $f3->set('errors["conds"]', 'Invalid selection(s)');
+            }
+        }
+
+        // if the error array is empty, redirect to summary page
+        if(empty($f3->get('errors'))){
+            header('location: summary');
+        }
     }
 
     // get the data from the model

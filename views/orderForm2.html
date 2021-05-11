@@ -15,6 +15,11 @@
                               name="conds[]"
                               value="{{@cond}}"> {{ucfirst(@cond)}}</label><br>
                 </repeat>
+
+                <!-- display an error message if there is spoof -->
+                <check if="{{isset(@errors['conds'])}}">
+                    <true><span class="err">{{@errors['conds']}}</span></true>
+                </check>
             </div>
         </div>
 
