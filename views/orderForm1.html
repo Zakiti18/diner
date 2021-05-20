@@ -11,7 +11,7 @@
             <label for="food" class="col-sm-2 control-label">What food would you like to order?</label>
 
             <div class="col-sm-4">
-                <input class="form-control" type="text" name="food" id="food" >
+                <input class="form-control" type="text" name="food" id="food" value="{{@userFood}}">
             </div>
 
             <!-- display an error message if there is one -->
@@ -26,8 +26,11 @@
             <label class="col-sm-2 control-label">Select a meal</label>
             <div class="col-sm-4">
                 <repeat group="{{@meals}}" value="{{@meal}}">
-                    <label><input type="radio" name="meal"
-                                  id="{{@meal}}" value="{{@meal}}"> {{ucfirst(@meal)}}</input></label><br>
+                    <label>
+                        <input type="radio" name="meal" id="{{@meal}}" value="{{@meal}}"
+                            <check if="{{@meal == @userMeal}}">checked="checked"</check>
+                        > {{ucFirst(@meal)}}</input>
+                    </label><br>
                 </repeat>
 
                 <!-- display an error message for meal if there is one -->

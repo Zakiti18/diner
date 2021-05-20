@@ -5,14 +5,17 @@
  * Return data for the diner app
  */
 
-// get the meals for the order form part 1
-function getMeals()
+class DataLayer
 {
-    return array("breakfast", "brunch", "lunch", "dinner");
-}
+    // get the meals for the order form part 1
+    static function getMeals()
+    {
+        return array("breakfast", "brunch", "lunch", "dinner");
+    }
 
-// get the condiments for the order form part 2
-function getCondiments()
-{
-    return array("ketchup", "mustard", "sriracha");
+    // get the condiments for the order form part 2
+    static function getCondiments()
+    {
+        return array("ketchup", "mustard", "sriracha");
+    }
 }
