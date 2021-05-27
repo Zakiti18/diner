@@ -2,6 +2,7 @@
 <body>
 <div class="container">
     <h1>Summary of Order</h1>
+    <p>Order ID: {{ @orderId }}</p>
     <p>Thank you for ordering {{@SESSION.order->getFood()}} for {{@SESSION.order->getMeal()}}</p>
     <check if="{{ !empty(@SESSION.order->getCondiments()) }}">
         <p>Condiments: {{ @SESSION.order->getCondiments() }}</p>
