@@ -6,30 +6,22 @@ error_reporting(E_ALL);
 
 // require needed files
 require_once('vendor/autoload.php');
-require_once ($_SERVER['DOCUMENT_ROOT'].'/../config.php');
 
 // start a session AFTER the autoload
 session_start();
-
-// connect to the database
-try{
-    // instantiate a PDO database object
-    $dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-    //echo "Connected"; // for debugging
-}
-catch (PDOException $e){
-    //echo $e->getMessage(); // for debugging
-    die("ERROR! Please call to place your order.");
-}
 
 // :: invoke static method, -> invoke instance method
 // instantiate classes
 $f3 = Base::instance();
 $con = new Controller($f3);
-$dataLayer = new DataLayer($dbh);
+$dataLayer = new DataLayer();
 
 // test my saveOrder method
 //$dataLayer->saveOrder(new Order("BLT", "lunch", "mayo"));
+//echo "<pre>";
+//$result = $dataLayer->getOrders();
+//var_dump($result);
+//echo "</pre>";
 
 // define routes
 // default route
@@ -59,6 +51,10 @@ $f3->route('GET|POST /order2', function (){
 
 $f3->route('GET /summary', function (){
     $GLOBALS['con']->summary();
+});
+
+$f3->route('GET /admin', function (){
+    $GLOBALS['con']->admin();
 });
 
 // run Fat-Free

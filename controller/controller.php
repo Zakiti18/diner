@@ -112,11 +112,23 @@ class Controller
     function summary()
     {
         // save the order to the database
-        $orderId = $GLOBALS['dataLayer']->saveOrder();
+        $orderId = $GLOBALS['dataLayer']->saveOrder($_SESSION['order']);
         $this->_f3->set('orderId', $orderId);
 
         // display the order summary
         $view = new Template();
         echo $view->render('views/summary.html');
+    }
+
+    function admin()
+    {
+        // grab the data
+        $orders = $GLOBALS['dataLayer']->getOrders();
+        // store the data in the hive
+        $this->_f3->set('orders', $orders);
+
+        // display the admin page
+        $view = new Template();
+        echo $view->render('views/admin.html');
     }
 }
